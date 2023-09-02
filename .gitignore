@@ -1,0 +1,8 @@
+credentials_dev.json
+outputdir
+var
+legacy
+.vscode
+__pycache__
+VENV
+old_requirements.txt
