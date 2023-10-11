@@ -59,8 +59,7 @@ def run(textin):
     #for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
     text = textin
     data = {
-        "content" : "@everyone " + text,
-        "username" : "HelioHost Test Webhook"
+        "content" : "@everyone " + text
     }
 
     rpHTML = replaceHTMLCodes(text)
