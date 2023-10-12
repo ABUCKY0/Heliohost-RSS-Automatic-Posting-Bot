@@ -81,7 +81,7 @@ def run(textin):
         # if an error occured, catch it so the rest of the program still runs
         print("\033[31m" + "An Exception Occured while attempting to post to Discord, but was caught. Here is the error: ")
         traceback.print_tb(disc.__traceback__)
-        print("\033[0m")
+        print("\033[33m" + "The Program is still running, but the Discord post was not made." + "\033[0m")
     #------------------------------- END DISCORD WEBHOOK -------------------------------#
     #---------------------------------- INSTAGRAM BOT ----------------------------------#
     print()
@@ -112,7 +112,7 @@ def run(textin):
     except Exception as i:
         print("\033[31m" + "An Exception Occured while attempting to post to Instagram, but was caught. Here is the error:")
         traceback.print_tb(i.__traceback__)
-        print("\033[0m")
+        print("\033[33m" + "The Program is still running, but the Instagram post was not made." + "\033[0m")
     #------------------------------- END INSTAGRAM BOT -------------------------------#
     #---------------------------------- FACEBOOK BOT ---------------------------------#
     try:
@@ -132,7 +132,7 @@ def run(textin):
     except Exception as f:
         print("\033[31m" + "An Exception Occured while attempting to post to Facebook, but was caught. Here is the error:")
         traceback.print_tb(f.__traceback__)
-        print("\033[0m")
+        print("\033[33m" + "The Program is still running, but the Facebook post was not made." + "\033[0m")
     #-------------------------------- END FACEBOOK BOT -------------------------------#
     #---------------------------------- TWITTER BOT ----------------------------------#
     print()
@@ -158,7 +158,7 @@ def run(textin):
     except Exception as t:
         print("\033[31m" + "An Exception Occured while attempting to post to Twitter, but was caught. Here is the error:")
         traceback.print_tb(t.__traceback__)
-        print("\033[0m")
+        print("\033[33m" + "The Program is still running, but the Twitter post was not made." + "\033[0m")
 
     #------------------------------- END TWITTER BOT -------------------------------#
 
