@@ -13,10 +13,14 @@ import traceback
 def defineVariables():
     try:
         with open('credentials_dev.json') as f: 
-            credentials = json.load(f)
+                credentials = json.load(f)
     except:
-        with open('credentials_prod.json') as f: 
-            credentials = json.load(f)
+        try:
+            with open('credentials_hhprod.json') as f: 
+                credentials = json.load(f)
+        except:
+            with open('credentials_prod.json') as f: 
+                credentials = json.load(f)
     
     global image_url, discord, twitter, insta, fb, discord_url, twitter_api, twitter_api_secret, twitter_access_token_secret, twitter_api_secret, twitter_bearer_token, twitter_access_token, fb_app_token, fb_page_id, ig_username, ig_password, outputdir, instagram_app_token, instagram_page_id
 

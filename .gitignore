@@ -1,4 +1,6 @@
 credentials_dev.json
+credentials_prod.json
+credentials_hhprod.json
 outputdir
 var
 legacy
