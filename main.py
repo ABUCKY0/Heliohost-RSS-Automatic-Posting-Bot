@@ -9,7 +9,7 @@ import rss
 import time
 from heliohostInstagram import heliohostInstagram
 from replaceHTMLCodes import replaceHTMLCodes
-
+import traceback
 def defineVariables():
     try:
         with open('credentials_dev.json') as f: 
@@ -79,15 +79,17 @@ def run(textin):
             print("Payload delivered successfully, code {}.".format(result.status_code))
     except Exception as disc:
         # if an error occured, catch it so the rest of the program still runs
-        print("An Exception Occured while attempting to post to Discord, but was caught. Here is the error: ")
-        print(disc)
+        print("\033[31m" + "An Exception Occured while attempting to post to Discord, but was caught. Here is the error: ")
+        traceback.print_tb(disc.__traceback__)
+        print("\033[0m")
     #------------------------------- END DISCORD WEBHOOK -------------------------------#
     #---------------------------------- INSTAGRAM BOT ----------------------------------#
     print()
-    ig = heliohostInstagram(instagram_app_token)
-    photos = []
+    
 
     try:
+        ig = heliohostInstagram(instagram_app_token)
+        photos = []
         maxlength = 600 #max amount of characters on an image
         if (len(text) > maxlength):
             sections = int(len(text)/maxlength + 1) #number of images to create, aka the sections of text to use in each image
@@ -108,8 +110,9 @@ def run(textin):
             photo = makeimage("dependencies/images/heliohost-bg.png",text=ig_text,font_size=85, font_down_offset=200, savetype="both", output_filename=outputdir + "output-0.png")
             ig.upload_photo(photo, text, image_url)
     except Exception as i:
-        print("An Exception Occured while attempting to post to Instagram, but was caught. Here is the error:")
-        print(i)
+        print("\033[31m" + "An Exception Occured while attempting to post to Instagram, but was caught. Here is the error:")
+        traceback.print_tb(i.__traceback__)
+        print("\033[0m")
     #------------------------------- END INSTAGRAM BOT -------------------------------#
     #---------------------------------- FACEBOOK BOT ---------------------------------#
     try:
@@ -127,8 +130,9 @@ def run(textin):
             message=text,
             link="https://heliohost.org")
     except Exception as f:
-        print("An Exception Occured while attempting to post to Facebook, but was caught. Here is the error:")
-        print(f)
+        print("\033[31m" + "An Exception Occured while attempting to post to Facebook, but was caught. Here is the error:")
+        traceback.print_tb(f.__traceback__)
+        print("\033[0m")
     #-------------------------------- END FACEBOOK BOT -------------------------------#
     #---------------------------------- TWITTER BOT ----------------------------------#
     print()
@@ -152,8 +156,9 @@ def run(textin):
         else:
             api.update_status(text)
     except Exception as t:
-        print("An Exception Occured while attempting to post to Twitter, but was caught. Here is the error:")
-        print(t)
+        print("\033[31m" + "An Exception Occured while attempting to post to Twitter, but was caught. Here is the error:")
+        traceback.print_tb(t.__traceback__)
+        print("\033[0m")
 
     #------------------------------- END TWITTER BOT -------------------------------#
 
