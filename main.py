@@ -143,12 +143,8 @@ def run(textin):
 
         api = tweepy.API(auth, wait_on_rate_limit=True)
 
-        try:
-            print("Authenticating to Twitter")
-            api.verify_credentials()
-            print("Authentication OK")
-        except:
-            print("Error during Twitter authentication")
+        print("Authenticating to Twitter")
+        api.verify_credentials()
 
         tweettext = text
         if (len(tweettext) > 280):
