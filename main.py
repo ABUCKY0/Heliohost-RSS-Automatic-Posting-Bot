@@ -52,7 +52,7 @@ def run(textin):
     defineVariables()
     try:
         #deletes all old images in the output directory before running
-        shutil.rmtree(outputdir)
+        #shutil.rmtree(outputdir)
         os.mkdir(outputdir)
     except:
         #if it is already not there, make it without erroring. Won't catch or care about other errors, so I hope there is no issue
