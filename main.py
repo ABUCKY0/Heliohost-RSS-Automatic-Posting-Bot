@@ -61,21 +61,28 @@ def run(textin, title, link, pubdate):
     """
     Path(outputdir).mkdir(parents=True, exist_ok=True) # makes the output directory if it doesn't exist
     #------------------------------- VARIABLES -------------------------------#
-
+    # Most of these are used for the discord webhook, but some are used for the other parts
     
     #for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
 
     # Makes sure text fits within a character limit
     text = textin
+
+    # Truncates the link to remove the ?do=findComment&comment=###### part
+    updated_link = link[:link.index("?")]
+
+    # Adds the title to the beginning of the text
+    text = "\n# " + title + "\n\n" + text
     if (len(text) > 2000):
         text = text[:1900] + "..."
     
     # Webhook Data
     data = {
         #"username" : title, # Username of the webhook
-        "content" : "@everyone " + text + "\n\n" + link # Message Contents
+        "content" : "@everyone " + text + "\n\n" + updated_link # Message Contents and adds edited link to the end
     }
 
+    # Replaces HTML Codes with their respective characters
     rpHTML = replaceHTMLCodes(text)
     text = rpHTML.replaceAmpersandCodes()
     #------------------------------- END VARIABLES -------------------------------#
@@ -100,8 +107,9 @@ def run(textin, title, link, pubdate):
     #---------------------------------- INSTAGRAM BOT ----------------------------------#
     print()
     
-
+    
     try:
+        
         ig = heliohostInstagram(instagram_app_token)
         photos = []
         maxlength = 600 #max amount of characters on an image
@@ -174,9 +182,14 @@ def run(textin, title, link, pubdate):
     #------------------------------- END TWITTER BOT -------------------------------#
 
 
+# Main Loop
 if __name__ == '__main__':
+    # HAHA SUCKER YOU THOUGHT THAT WAS THE MAIN LOOP IT WAS JUST AN IF STATEMENT
+    # THIS IS THE MAIN LOOP
     while(True):
+        # datapt is short for data point, it is the data point that is returned from the rss feed
         datapt = rss.heliohostrss()
         if (datapt[0] == True):
+            # text, title, link, publication date
             run(datapt[1], datapt[2], datapt[3], datapt[4])
         time.sleep(10)
