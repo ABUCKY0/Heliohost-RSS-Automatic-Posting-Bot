@@ -69,8 +69,10 @@ def run(textin, title, link, pubdate):
     text = textin
 
     # Truncates the link to remove the ?do=findComment&comment=###### part
-    updated_link = link[:link.index("?")]
-
+    try:
+        updated_link = link[:link.index("?")]
+    except ValueError:
+        updated_link = link
     # Adds the title to the beginning of the text
     text = "\n# " + title + "\n\n" + text
     if (len(text) > 2000):
