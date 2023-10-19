@@ -1,15 +1,15 @@
 import requests #dependencyrer
 from HeliohostInstagramImageGenerator import makeimage
-import os
 import tweepy
 import facebook
 import json
-import shutil
 import rss
 import time
 from heliohostInstagram import heliohostInstagram
 from replaceHTMLCodes import replaceHTMLCodes
 import traceback
+from pathlib import Path
+
 def defineVariables():
     try:
         with open('credentials_dev.json') as f: 
@@ -48,8 +48,9 @@ def defineVariables():
 
     outputdir = credentials["general"]["img_dir"]
     image_url = credentials["general"]["img_url"]
-def run(textin):
+def run(textin, title, link, pubdate):
     defineVariables()
+    """
     try:
         #deletes all old images in the output directory before running
         #shutil.rmtree(outputdir)
@@ -57,13 +58,22 @@ def run(textin):
     except:
         #if it is already not there, make it without erroring. Won't catch or care about other errors, so I hope there is no issue
         os.mkdir(outputdir)
+    """
+    Path(outputdir).mkdir(parents=True, exist_ok=True) # makes the output directory if it doesn't exist
     #------------------------------- VARIABLES -------------------------------#
 
     
     #for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
+
+    # Makes sure text fits within a character limit
     text = textin
+    if (len(text) > 2000):
+        text = text[:1900] + "..."
+    
+    # Webhook Data
     data = {
-        "content" : "@everyone " + text
+        #"username" : title, # Username of the webhook
+        "content" : "@everyone " + text + "\n\n" + link # Message Contents
     }
 
     rpHTML = replaceHTMLCodes(text)
@@ -101,7 +111,7 @@ def run(textin):
                 sections = 10
             for i in range(sections):
                 ig_text = text[maxlength * i:maxlength * (i + 1)] + "..."
-                outfile = "outputdir/output-" + str(i) + ".png"
+                outfile = outputdir + "/output-" + time.strftime("%Y%m%d-%H%M%S") + "-" + str(i) + ".png"
                 with open(outfile, 'w') as fp:
                     pass
                 photo = makeimage("dependencies/images/heliohost-bg.png",text=ig_text,font_size=85, font_down_offset=200, savetype="file", output_filename=outfile)
@@ -111,7 +121,8 @@ def run(textin):
         
         else:
             ig_text = text
-            photo = makeimage("dependencies/images/heliohost-bg.png",text=ig_text,font_size=85, font_down_offset=200, savetype="both", output_filename=outputdir + "output-0.png")
+            outfile = outputdir + "/output-" + time.strftime("%Y%m%d-%H%M%S") + "-0.png"
+            photo = makeimage("dependencies/images/heliohost-bg.png",text=ig_text,font_size=85, font_down_offset=200, savetype="both", output_filename=outfile)
             ig.upload_photo(photo, text, image_url)
     except Exception as i:
         print("\033[31m" + "An Exception Occured while attempting to post to Instagram, but was caught. Here is the error:")
@@ -167,5 +178,5 @@ if __name__ == '__main__':
     while(True):
         datapt = rss.heliohostrss()
         if (datapt[0] == True):
-            run(datapt[1])
+            run(datapt[1], datapt[2], datapt[3], datapt[4])
         time.sleep(10)
