@@ -163,17 +163,21 @@ def run(textin, title, link, pubdate):
     print()
     # Authenticate to Twitter
     try:
-        auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
-        api = tweepy.API(auth)
+        client = tweepy.Client(
+            consumer_key=twitter_api, consumer_secret=twitter_api_secret,
+            access_token=twitter_access_token, access_token_secret=twitter_access_token_secret
+        )
 
         print("Authenticating to Twitter")
-        print(api.verify_credentials().screen_name)
 
         tweettext = text
-        if (len(tweettext) > 280):
-            api.update_status(text[:277] + "...")
+        if (len(tweettext) > 256):
+            response = client.create_tweet(text=tweettext[:253] + "... " + updated_link)
+            print(f"https://twitter.com/user/status/{response.data['id']}")
         else:
             api.update_status(text)
+            response = client.create_tweet(text=tweettext + " " + updated_link)
+            print(f"https://twitter.com/user/status/{response.data['id']}")
     except Exception as t:
         print("\033[31m" + "An Exception Occured while attempting to post to Twitter, but was caught. Here is the error:")
         traceback.print_tb(t.__traceback__)
