@@ -163,13 +163,11 @@ def run(textin, title, link, pubdate):
     print()
     # Authenticate to Twitter
     try:
-        auth = tweepy.OAuthHandler(twitter_api, twitter_api_secret)
-        auth.set_access_token(twitter_access_token, twitter_access_token_secret)
-
-        api = tweepy.API(auth, wait_on_rate_limit=True)
+        auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
+        api = tweepy.API(auth)
 
         print("Authenticating to Twitter")
-        api.verify_credentials()
+        print(api.verify_credentials().screen_name)
 
         tweettext = text
         if (len(tweettext) > 280):
