@@ -23,11 +23,12 @@ def rss(url, last_modified=None):# store the etag and modified
         os.remove(filename)
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
-        print(feed_update["entries"][0])
+        #print(feed_update["entries"][0])
         text = feed_update["entries"][0]["summary"]
         title = feed_update["entries"][0]["title"]
         link = feed_update["entries"][0]["link"]
         pubdate = feed_update["entries"][0]["published"]
+        print("New post in RSS feed: " + title + " " + pubdate)
         return (True, text, title, link, pubdate)
     else:
         return (False, None, None, None)
