@@ -91,7 +91,6 @@ def run(textin, title, link, pubdate):
     text = rpHTML.replaceAmpersandCodes()
     #------------------------------- END VARIABLES -------------------------------#
     #------------------------------ DISCORD WEBHOOK ------------------------------#
-    print()
 
     try:
         #Trying to post to discord
@@ -112,7 +111,6 @@ def run(textin, title, link, pubdate):
         print("\033[33m" + "The Program is still running, but the Discord post was not made." + "\033[0m")
     #------------------------------- END DISCORD WEBHOOK -------------------------------#
     #---------------------------------- FACEBOOK BOT ---------------------------------#
-    print()
 
     try:
         fb = facebook.GraphAPI(access_token=fb_app_token, version="2.12")
@@ -128,7 +126,10 @@ def run(textin, title, link, pubdate):
             connection_name="feed",
             message=fbtext,
             link=updated_link)
-        print("Facebook news was posted")
+        feed = fb.get_connections(fb_page_id, "feed")
+        last_post = feed["data"][0]["id"]
+        post_id = last_post.split("_")[1]
+        print("Facebook news was posted - https://www.facebook.com/HelioHost.org/posts/" + post_id)
     except Exception as f:
         print("\033[31m" + "An Exception Occured while attempting to post to Facebook, but was caught. Here is the error:")
         #traceback.print_tb(f.__traceback__)
@@ -136,7 +137,6 @@ def run(textin, title, link, pubdate):
         print("\033[33m" + "The Program is still running, but the Facebook post was not made." + "\033[0m")
     #-------------------------------- END FACEBOOK BOT -------------------------------#
     #---------------------------------- TWITTER BOT ----------------------------------#
-    print()
 
     # Authenticate to Twitter
     try:
@@ -146,13 +146,11 @@ def run(textin, title, link, pubdate):
         )
 
         if (len(tweettext) > 256):
-            response = client.create_tweet(text=tweettext[:253] + "... " + updated_link)
-            print("Twitter news was posted")
-            print(f"https://twitter.com/user/status/{response.data['id']}")
+            response = client.create_tweet(text=tweettext[:233] + "... " + updated_link)
+            print(f"Twitter news was posted - https://twitter.com/user/status/{response.data['id']}")
         else:
             response = client.create_tweet(text=tweettext + " " + updated_link)
-            print("Twitter news was posted")
-            print(f"https://twitter.com/user/status/{response.data['id']}")
+            print(f"Twitter news was posted - https://twitter.com/user/status/{response.data['id']}")
     except Exception as t:
         print("\033[31m" + "An Exception Occured while attempting to post to Twitter, but was caught. Here is the error:")
         #traceback.print_tb(t.__traceback__)
@@ -161,7 +159,6 @@ def run(textin, title, link, pubdate):
 
     #------------------------------- END TWITTER BOT -------------------------------#
     #---------------------------------- INSTAGRAM BOT ----------------------------------#
-    print()
     
     if (instagram_app_token == ""):
         print("Skipping Instagram")
