@@ -8,3 +8,4 @@ legacy
 __pycache__
 VENV
 old_requirements.txt
+test

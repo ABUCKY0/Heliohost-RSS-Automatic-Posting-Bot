@@ -1,11 +1,11 @@
 import requests #dependencyrer
-from HeliohostInstagramImageGenerator import makeimage
+from lib.imageGeneration.ImageGenerator import makeimage
 import tweepy
 import facebook
 import json
 import rss
 import time
-from heliohostInstagram import heliohostInstagram
+from lib.instagram.heliohostInstagram import heliohostInstagram
 from replaceHTMLCodes import replaceHTMLCodes
 import traceback
 from pathlib import Path
